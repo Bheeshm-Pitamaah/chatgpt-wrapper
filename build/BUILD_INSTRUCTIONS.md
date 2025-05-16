@@ -81,6 +81,28 @@ After building, you'll find the following files in the `release` directory:
 - `Rohit Bot-0.1.0-mac.zip`: Compressed archive for macOS
 - `mac/`: Directory containing the unpacked application
 
+## How to Distribute Your Application
+
+You now have several options for distributing your application:
+
+### For Linux users:
+- Share the AppImage file (`release/Rohit Bot-0.1.0.AppImage`)
+- Users can simply make it executable (`chmod +x "Rohit Bot-0.1.0.AppImage"`) and run it
+- No npm, Node.js, or installation required
+- Alternatively, you can share the Snap package for systems that support it
+
+### For Windows users:
+- Run `npm run dist:win` to create a Windows installer
+- Share the installer (`release/Rohit Bot Setup 0.1.0.exe`)
+- Users can run the installer and then run the application from the Start menu
+- No administrator privileges are required
+
+### For macOS users:
+- Run `npm run dist:mac` to create a macOS disk image
+- Share the disk image (`release/Rohit Bot-0.1.0.dmg`)
+- Users can mount the disk image, drag the application to the Applications folder, and run it
+- No administrator privileges are required
+
 ## Running the Distributed Application
 
 ### Linux
