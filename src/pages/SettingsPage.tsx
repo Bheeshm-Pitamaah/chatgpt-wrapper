@@ -47,7 +47,7 @@ const SettingsPage: React.FC = () => {
 
   useEffect(() => {
     // Load settings from localStorage
-    const savedSettings = localStorage.getItem('kapi_settings');
+    const savedSettings = localStorage.getItem('rohit_settings');
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       setApiKeys(settings.apiKeys || {});
@@ -62,14 +62,14 @@ const SettingsPage: React.FC = () => {
       [provider]: value
     };
     setApiKeys(newApiKeys);
-    
+
     // Save settings immediately when API key changes
     const settings = {
       apiKeys: newApiKeys,
       folders: selectedFolders,
       chatMemory
     };
-    localStorage.setItem('kapi_settings', JSON.stringify(settings));
+    localStorage.setItem('rohit_settings', JSON.stringify(settings));
   };
 
   const handleSaveSettings = () => {
@@ -78,7 +78,7 @@ const SettingsPage: React.FC = () => {
       folders: selectedFolders,
       chatMemory
     };
-    localStorage.setItem('kapi_settings', JSON.stringify(settings));
+    localStorage.setItem('rohit_settings', JSON.stringify(settings));
   };
 
   const handleSelectFolder = () => {
@@ -154,14 +154,14 @@ const SettingsPage: React.FC = () => {
           </div>
 
           <div className={styles.sectionTitle}>Model Providers</div>
-          
+
           {Object.entries(PROVIDERS).map(([providerId, provider]) => (
             <div key={providerId} className={styles.settingItem}>
               <div className={styles.providerInfo}>
                 <label htmlFor={`apiKey-${providerId}`}>{provider.name}</label>
                 <div className={styles.providerDescription}>
                   {provider.description}
-                  <a 
+                  <a
                     href={provider.docsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -192,4 +192,4 @@ const SettingsPage: React.FC = () => {
   );
 };
 
-export default SettingsPage; 
+export default SettingsPage;

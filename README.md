@@ -1,14 +1,14 @@
-# Kapi Lite
+# Rohit Bot
 
 <div align="center">
-  <img src="public/assets/logos/icon.png" alt="Kapi Lite Logo" width="200"/>
+  <img src="public/assets/logos/icon.png" alt="Rohit Bot Logo" width="200"/>
   <h3>Your AI-Powered Development Companion</h3>
   <p><em>Code smarter, build faster, learn deeper</em></p>
 </div>
 
 ## Vision
 
-Kapi Lite is a simple light weight version of our main product, that is aimed at revolutionizing the way developers interact with their code. By bringing advanced AI capabilities directly into your development workflow, we want to create a more intuitive, efficient, and enlightening coding experience. Think of it as having a senior developer, technical architect, and coding mentor - all rolled into one intelligent companion.
+Rohit Bot is a simple lightweight application aimed at revolutionizing the way developers interact with their code. By bringing advanced AI capabilities directly into your development workflow, we want to create a more intuitive, efficient, and enlightening coding experience. Think of it as having a senior developer, technical architect, and coding mentor - all rolled into one intelligent companion.
 
 ### 🌟 Key Features
 
@@ -41,7 +41,7 @@ Kapi Lite is a simple light weight version of our main product, that is aimed at
 
 ## 🔒 Privacy & Security
 
-Kapi Lite is built with a privacy-first approach:
+Rohit Bot is built with a privacy-first approach:
 - All code analysis happens locally on your machine
 - Selective code sharing with AI - you control what gets shared
 - No data storage or collection
@@ -114,6 +114,6 @@ We welcome contributions! Whether it's:
 Check our [Contributing Guidelines](CONTRIBUTING.md) to get started.
 
 <div align="center">
-  <p>Built with ❤️ by the Kapi IDE Team</p>
+  <p>Built with ❤️ by Rohit</p>
   <p>Making development more intuitive, one line at a time.</p>
 </div>

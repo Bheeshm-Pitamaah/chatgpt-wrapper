@@ -149,8 +149,8 @@ export const createConversation = async (initialMessage: ChatMessage): Promise<C
   await ensureInitialized();
 
   // Check if there's a flag indicating this initial message is being processed
-  const processingFlag = localStorage.getItem('kapi_initial_message_processing');
-  const existingId = localStorage.getItem('kapi_last_conversation_id');
+  const processingFlag = localStorage.getItem('rohit_initial_message_processing');
+  const existingId = localStorage.getItem('rohit_last_conversation_id');
 
   // If the flag exists, it means we're already processing this message
   if (processingFlag && existingId) {
@@ -161,12 +161,12 @@ export const createConversation = async (initialMessage: ChatMessage): Promise<C
       return existingConversation;
     }
     // If the conversation doesn't exist, clear the flag and continue
-    localStorage.removeItem('kapi_initial_message_processing');
-    localStorage.removeItem('kapi_last_conversation_id');
+    localStorage.removeItem('rohit_initial_message_processing');
+    localStorage.removeItem('rohit_last_conversation_id');
   }
 
   // Set the flag to prevent duplicate creation
-  localStorage.setItem('kapi_initial_message_processing', 'true');
+  localStorage.setItem('rohit_initial_message_processing', 'true');
 
   const now = Date.now();
 
@@ -186,7 +186,7 @@ export const createConversation = async (initialMessage: ChatMessage): Promise<C
   };
 
   // Store the conversation ID for potential duplicate prevention
-  localStorage.setItem('kapi_last_conversation_id', newConversation.id);
+  localStorage.setItem('rohit_last_conversation_id', newConversation.id);
 
   console.log(`Adding conversation ${newConversation.id} to IndexedDB`);
   // Add to IndexedDB
@@ -197,7 +197,7 @@ export const createConversation = async (initialMessage: ChatMessage): Promise<C
   console.log(`Verification of conversation ${newConversation.id}:`, verifyConversation ? 'Success' : 'Failed');
 
   // Clear the processing flag after successful creation
-  localStorage.removeItem('kapi_initial_message_processing');
+  localStorage.removeItem('rohit_initial_message_processing');
 
   return newConversation;
 };

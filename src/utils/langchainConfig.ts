@@ -78,8 +78,8 @@ export const AVAILABLE_MODELS: SupportedModel[] = [
   }
 ];
 
-const SELECTED_MODEL_KEY = 'kapi_selected_model';
-const SELECTED_PROVIDER_KEY = 'kapi_selected_provider';
+const SELECTED_MODEL_KEY = 'rohit_selected_model';
+const SELECTED_PROVIDER_KEY = 'rohit_selected_provider';
 
 export const saveSelectedModel = (modelId: string) => {
   localStorage.setItem(SELECTED_MODEL_KEY, modelId);
@@ -261,7 +261,7 @@ export const createChatModel = async (modelId: string) => {
   }
 
   // Get API keys from localStorage
-  const settings = localStorage.getItem('kapi_settings');
+  const settings = localStorage.getItem('rohit_settings');
   const apiKeys = settings ? JSON.parse(settings).apiKeys || {} : {};
   const apiKey = apiKeys[model.provider];
   console.log("Using provider:", model.provider, "API key available:", !!apiKey);

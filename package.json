@@ -1,6 +1,6 @@
 {
-  "name": "kapi-lite",
-  "productName": "Kapi Lite",
+  "name": "rohit-bot",
+  "productName": "Rohit Bot",
   "version": "0.1.0",
   "description": "Simplified Electron app with Vite",
   "author": {
@@ -22,7 +22,7 @@
     "dist:mac": "electron-builder --mac"
   },
   "build": {
-    "appId": "com.kapi-lite.app",
+    "appId": "com.rohit-bot.app",
     "files": [
       "dist/**/*",
       "dist-electron/**/*"
@@ -95,7 +95,7 @@
       "deleteAppDataOnUninstall": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Kapi Lite"
+      "shortcutName": "Rohit Bot"
     },
     "linux": {
       "icon": "build/icon.png"

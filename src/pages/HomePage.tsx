@@ -82,7 +82,7 @@ const HomePage: React.FC = () => {
         }
 
         // Make sure we're storing valid JSON
-        localStorage.setItem('kapi_initialMessage', JSON.stringify(messageData));
+        localStorage.setItem('rohit_initialMessage', JSON.stringify(messageData));
         console.log('Stored initial message:', messageData);
 
         // Short delay to ensure localStorage is updated

@@ -1,10 +1,10 @@
-# Distributing Kapi Lite
+# Distributing Rohit Bot
 
-This document explains how to distribute Kapi Lite to end users without exposing the source code.
+This document explains how to distribute Rohit Bot to end users without exposing the source code.
 
 ## Available Distribution Formats
 
-Kapi Lite can be distributed in several formats:
+Rohit Bot can be distributed in several formats:
 
 ### Linux
 - **AppImage**: A standalone executable that can be run on most Linux distributions without installation
@@ -61,29 +61,29 @@ npm run dist:mac
 After building, you'll find the following files in the `release` directory:
 
 ### Linux
-- `Kapi Lite-0.1.0.AppImage`: Standalone executable for Linux
-- `kapi-lite_0.1.0_amd64.snap`: Snap package for Linux
+- `Rohit Bot-0.1.0.AppImage`: Standalone executable for Linux
+- `rohit-bot_0.1.0_amd64.snap`: Snap package for Linux
 - `linux-unpacked/`: Directory containing the unpacked application
 
 ### Windows
-- `Kapi Lite Setup 0.1.0.exe`: Installer for Windows
+- `Rohit Bot Setup 0.1.0.exe`: Installer for Windows
 - `win-unpacked/`: Directory containing the unpacked application
 
 ### macOS
-- `Kapi Lite-0.1.0.dmg`: Disk image for macOS
-- `Kapi Lite-0.1.0-mac.zip`: Compressed archive for macOS
+- `Rohit Bot-0.1.0.dmg`: Disk image for macOS
+- `Rohit Bot-0.1.0-mac.zip`: Compressed archive for macOS
 - `mac/`: Directory containing the unpacked application
 
 ## Running the Distributed Application
 
 ### Linux
-- **AppImage**: Make the file executable (`chmod +x "Kapi Lite-0.1.0.AppImage"`) and run it (`./Kapi\ Lite-0.1.0.AppImage`)
-- **Snap**: Install the snap package (`sudo snap install kapi-lite_0.1.0_amd64.snap --dangerous`) and run it (`kapi-lite`)
-- **Unpacked Directory**: Run the executable (`./release/linux-unpacked/kapi-lite`)
+- **AppImage**: Make the file executable (`chmod +x "Rohit Bot-0.1.0.AppImage"`) and run it (`./Rohit\ Bot-0.1.0.AppImage`)
+- **Snap**: Install the snap package (`sudo snap install rohit-bot_0.1.0_amd64.snap --dangerous`) and run it (`rohit-bot`)
+- **Unpacked Directory**: Run the executable (`./release/linux-unpacked/rohit-bot`)
 
 ### Windows
 - **NSIS Installer**: Run the installer and follow the prompts. No administrator privileges are required.
-- **Portable**: Run the executable (`release\Kapi Lite 0.1.0.exe`). This is completely portable and requires no installation.
+- **Portable**: Run the executable (`release\Rohit Bot 0.1.0.exe`). This is completely portable and requires no installation.
 
 ### macOS
 - **DMG**: Mount the disk image, drag the application to the Applications folder, and run it. No administrator privileges are required.
@@ -127,6 +127,6 @@ To update the application, simply build a new version and distribute it to your 
 
 ## Troubleshooting
 
-- If the application doesn't start, check the logs (usually in `~/.config/kapi-lite/logs` on Linux, `%APPDATA%\kapi-lite\logs` on Windows, or `~/Library/Logs/kapi-lite` on macOS)
+- If the application doesn't start, check the logs (usually in `~/.config/rohit-bot/logs` on Linux, `%APPDATA%\rohit-bot\logs` on Windows, or `~/Library/Logs/rohit-bot` on macOS)
 - Make sure all dependencies are included in the build
 - If you're using native modules, make sure they're properly rebuilt for the target platform

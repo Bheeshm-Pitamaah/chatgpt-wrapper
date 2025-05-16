@@ -1,6 +1,6 @@
 /**
- * File System Service for Kapi-Lite
- * 
+ * File System Service for Rohit Bot
+ *
  * A simple implementation for accessing the user's filesystem in an Electron app
  * to support code reviews and saving generated artifacts like diagrams.
  */
@@ -15,7 +15,7 @@ export const pathUtils = {
     path = path.replace(/\/+/g, '/');
     return path;
   },
-  
+
   join: (...paths: string[]): string => {
     // Simple path joining for client-side
     return paths
@@ -23,19 +23,19 @@ export const pathUtils = {
       .map(p => p.replace(/^\/|\/$/, '')) // Remove leading/trailing slashes
       .join('/');
   },
-  
+
   basename: (path: string): string => {
     // Get the basename of a path
     return path.split('/').pop() || '';
   },
-  
+
   extname: (path: string): string => {
     // Get the extension of a path
     const basename = pathUtils.basename(path);
     const dotIndex = basename.lastIndexOf('.');
     return dotIndex < 0 ? '' : basename.slice(dotIndex);
   },
-  
+
   dirname: (path: string): string => {
     // Get the directory name of a path
     path = pathUtils.normalize(path);
@@ -43,22 +43,22 @@ export const pathUtils = {
     parts.pop();
     return parts.length === 0 ? '/' : parts.join('/');
   },
-  
+
   relative: (from: string, to: string): string => {
     // Get the relative path from one path to another
     const fromParts = pathUtils.normalize(from).split('/').filter(Boolean);
     const toParts = pathUtils.normalize(to).split('/').filter(Boolean);
-    
+
     // Find common prefix
     let i = 0;
     while (i < fromParts.length && i < toParts.length && fromParts[i] === toParts[i]) {
       i++;
     }
-    
+
     // Build the relative path
     const upParts = new Array(fromParts.length - i).fill('..');
     const downParts = toParts.slice(i);
-    
+
     return [...upParts, ...downParts].join('/');
   }
 };
@@ -72,14 +72,14 @@ export const isFileSystemApiAvailable = (): boolean => {
   const hasApi = isWindowDefined && !!window.api;
   const hasFileSystem = hasApi && !!window.api.fileSystem;
   const hasSelectDirectory = hasFileSystem && typeof window.api.fileSystem.selectDirectory === 'function';
-  
+
   console.log('File System API availability check:', {
     isWindowDefined,
     hasApi,
     hasFileSystem,
     hasSelectDirectory
   });
-  
+
   return hasSelectDirectory;
 };
 
@@ -126,7 +126,7 @@ export const initializeFileSystem = async (): Promise<string[]> => {
 export const isPathAllowed = (filePath: string): boolean => {
   // Normalize path for consistent comparison
   const normalizedPath = pathUtils.normalize(filePath);
-  
+
   // Check if path is within any allowed directory
   return allowedDirectories.some(dir => {
     const normalizedDir = pathUtils.normalize(dir);
@@ -139,15 +139,15 @@ export const isPathAllowed = (filePath: string): boolean => {
  */
 export const readFile = async (filePath: string): Promise<string> => {
   console.log('readFile called for path:', filePath);
-  
+
   const allowed = isPathAllowed(filePath);
   console.log('Path allowed:', allowed);
-  
+
   if (!allowed) {
     console.error('Access denied: File is outside allowed directories');
     throw new Error('Access denied: File is outside allowed directories');
   }
-  
+
   try {
     console.log('Reading file content');
     const content = await window.api.fileSystem.readFile(filePath);
@@ -164,12 +164,12 @@ export const readFile = async (filePath: string): Promise<string> => {
  */
 export const readFiles = async (filePaths: string[]): Promise<{[path: string]: string}> => {
   const results: {[path: string]: string} = {};
-  
+
   for (const filePath of filePaths) {
     if (!isPathAllowed(filePath)) {
       continue; // Skip unauthorized paths
     }
-    
+
     try {
       results[filePath] = await window.api.fileSystem.readFile(filePath);
     } catch (error) {
@@ -177,7 +177,7 @@ export const readFiles = async (filePaths: string[]): Promise<{[path: string]: s
       // Continue with other files
     }
   }
-  
+
   return results;
 };
 
@@ -186,20 +186,20 @@ export const readFiles = async (filePaths: string[]): Promise<{[path: string]: s
  */
 export const listDirectory = async (dirPath: string): Promise<DirectoryInfo> => {
   console.log('listDirectory called for path:', dirPath);
-  
+
   const allowed = isPathAllowed(dirPath);
   console.log('Path allowed:', allowed, 'Allowed directories:', allowedDirectories);
-  
+
   if (!allowed) {
     console.error('Access denied: Directory is outside allowed directories');
     throw new Error('Access denied: Directory is outside allowed directories');
   }
-  
+
   try {
     console.log('Calling window.api.fileSystem.listDirectory()');
     const files = await window.api.fileSystem.listDirectory(dirPath);
     console.log(`Listed ${files.length} items in directory`);
-    
+
     return {
       path: dirPath,
       files
@@ -214,17 +214,17 @@ export const listDirectory = async (dirPath: string): Promise<DirectoryInfo> => 
  * Save content to a file
  */
 export const saveFile = async (
-  filePath: string, 
+  filePath: string,
   content: string | Buffer,
   options: SaveFileOptions = {}
 ): Promise<void> => {
   if (!isPathAllowed(filePath)) {
     throw new Error('Access denied: File is outside allowed directories');
   }
-  
+
   // Convert Buffer to string if needed
   const contentStr = content instanceof Buffer ? content.toString('utf8') : content;
-  
+
   try {
     await window.api.fileSystem.writeFile(filePath, contentStr, options);
   } catch (error) {
@@ -242,20 +242,20 @@ export const selectDirectory = async (): Promise<string | null> => {
     console.log('Calling window.api.fileSystem.selectDirectory()');
     const result = await window.api.fileSystem.selectDirectory();
     console.log('selectDirectory result:', result);
-    
+
     if (result.canceled || result.filePaths.length === 0) {
       console.log('Directory selection canceled or no paths selected');
       return null;
     }
-    
+
     const selectedPath = result.filePaths[0];
     console.log('Selected directory path:', selectedPath);
-    
+
     // Refresh allowed directories
     console.log('Refreshing allowed directories');
     allowedDirectories = await window.api.fileSystem.getAllowedDirectories();
     console.log('Updated allowed directories:', allowedDirectories);
-    
+
     return selectedPath;
   } catch (error) {
     console.error('Error selecting directory:', error);
@@ -272,12 +272,12 @@ export const selectFile = async (filters?: { name: string, extensions: string[] 
     if (result.canceled || result.filePaths.length === 0) {
       return null;
     }
-    
+
     const selectedPath = result.filePaths[0];
-    
+
     // Refresh allowed directories
     allowedDirectories = await window.api.fileSystem.getAllowedDirectories();
-    
+
     return selectedPath;
   } catch (error) {
     console.error('Error selecting file:', error);

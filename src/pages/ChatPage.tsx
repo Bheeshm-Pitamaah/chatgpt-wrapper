@@ -88,17 +88,17 @@ const ChatPage: React.FC = () => {
       return;
     }
 
-    const initialMessageData = localStorage.getItem('kapi_initialMessage');
+    const initialMessageData = localStorage.getItem('rohit_initialMessage');
 
     if (initialMessageData) {
       try {
         const { model, initialMessage, timestamp } = JSON.parse(initialMessageData);
 
         // Check if we've already processed this message
-        const lastProcessedTimestamp = localStorage.getItem('kapi_last_processed_timestamp');
+        const lastProcessedTimestamp = localStorage.getItem('rohit_last_processed_timestamp');
         if (lastProcessedTimestamp && lastProcessedTimestamp === timestamp.toString()) {
           console.log('This message has already been processed, skipping');
-          localStorage.removeItem('kapi_initialMessage');
+          localStorage.removeItem('rohit_initialMessage');
           return;
         }
 
@@ -128,8 +128,8 @@ const ChatPage: React.FC = () => {
             console.log("Code review command detected in initial message");
             // This is a code review command, let's create a new conversation
             // Mark this message as processed immediately
-            localStorage.setItem('kapi_last_processed_timestamp', timestamp.toString());
-            localStorage.removeItem('kapi_initialMessage');
+            localStorage.setItem('rohit_last_processed_timestamp', timestamp.toString());
+            localStorage.removeItem('rohit_initialMessage');
 
             // Always start with a new conversation for code review from homepage
             setActiveConversationId(null);
@@ -186,7 +186,7 @@ const ChatPage: React.FC = () => {
             setActiveConversationId(newConversation.id);
 
             // Mark this message as processed
-            localStorage.setItem('kapi_last_processed_timestamp', timestamp.toString());
+            localStorage.setItem('rohit_last_processed_timestamp', timestamp.toString());
 
             // Process with AI
             const tempConversation: Conversation = {
@@ -218,12 +218,12 @@ const ChatPage: React.FC = () => {
           } finally {
             setIsProcessing(false);
             // Clear the localStorage item AFTER processing is complete
-            localStorage.removeItem('kapi_initialMessage');
+            localStorage.removeItem('rohit_initialMessage');
           }
         }
       } catch (error) {
         console.error('Error parsing initial message data:', error);
-        localStorage.removeItem('kapi_initialMessage');
+        localStorage.removeItem('rohit_initialMessage');
       }
     }
   }, [isDbInitializing, setSelectedModel]);

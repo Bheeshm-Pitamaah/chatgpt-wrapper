@@ -47,7 +47,7 @@ export async function processMessage(conversation: Conversation, message: string
   try {
     console.log('Creating chat model for processing message');
     // Check for initial message data first
-    const initialMessageData = localStorage.getItem('kapi_initialMessage');
+    const initialMessageData = localStorage.getItem('rohit_initialMessage');
     console.log('Initial message data in localStorage:', !!initialMessageData);
     let selectedModel: SupportedModel | null = null;
 
@@ -56,7 +56,7 @@ export async function processMessage(conversation: Conversation, message: string
       const { model } = JSON.parse(initialMessageData);
       selectedModel = model;
       // Clear the initial message data as it's been used
-      localStorage.removeItem('kapi_initialMessage');
+      localStorage.removeItem('rohit_initialMessage');
     } else if (selectedModelId) {
       // Use the explicitly provided model ID if available
       const availableModels = await import('./langchainConfig').then(m => m.AVAILABLE_MODELS);

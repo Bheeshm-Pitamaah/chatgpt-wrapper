@@ -3,7 +3,7 @@
  * Handles database operations for storing conversations
  */
 
-const DB_NAME = 'kapi_database';
+const DB_NAME = 'rohit_database';
 const DB_VERSION = 1;
 const CONVERSATIONS_STORE = 'conversations';
 

@@ -21,7 +21,7 @@ const App: React.FC = () => {
         setDbReady(true);
 
         // Check if we need to migrate data
-        if (!localStorage.getItem('kapi_migration_completed')) {
+        if (!localStorage.getItem('rohit_migration_completed')) {
           setIsMigrating(true);
           const migrationSuccess = await migrateFromLocalStorage();
 
