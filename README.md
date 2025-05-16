@@ -22,7 +22,22 @@ Kapi Lite is a simple light weight version of our main product, that is aimed at
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Start the application: `npm start`
+3. Start the development server: `npm run dev`
+4. Or build and run the application: `npm run start:prod`
+
+### Available Scripts
+
+- `npm run dev` - Start the application in development mode with hot reloading (recommended for development)
+- `npm start` - Run the built application in production mode (requires a previous build)
+- `npm run start:dev` - Run the application in development mode without hot reloading
+- `npm run start:prod` - Build the application and then run it in production mode
+- `npm run build` - Build the application without packaging
+- `npm run build:dir` - Build the application and package it in a directory format
+- `npm run build:prod` - Build the application and create installers
+- `npm run dist` - Create installers for your current platform
+- `npm run dist:win` - Create Windows installers
+- `npm run dist:linux` - Create Linux installers
+- `npm run dist:mac` - Create macOS installers
 
 ## 🔒 Privacy & Security
 

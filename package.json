@@ -9,7 +9,11 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && electron-builder --dir",
+    "start": "cross-env NODE_ENV=production electron .",
+    "start:dev": "cross-env NODE_ENV=development electron .",
+    "start:prod": "npm run build && cross-env NODE_ENV=production electron .",
+    "build": "vite build",
+    "build:dir": "vite build && electron-builder --dir",
     "build:prod": "vite build && electron-builder",
     "preview": "vite preview",
     "dist": "electron-builder",
@@ -44,10 +48,54 @@
             "x64"
           ]
         }
+      ],
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "entitlements": false,
+      "entitlementsInherit": false,
+      "identity": null
+    },
+    "dmg": {
+      "sign": false,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
       ]
     },
     "win": {
-      "icon": "build/icon.ico"
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": false,
+      "perMachine": false,
+      "deleteAppDataOnUninstall": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Kapi Lite"
     },
     "linux": {
       "icon": "build/icon.png"
@@ -58,27 +106,29 @@
     ]
   },
   "dependencies": {
-    "@google/genai": "^0.10.0",
+    "@google/genai": "^0.14.0",
+    "@google/generative-ai": "^0.24.1",
     "@heroicons/react": "^2.2.0",
-    "@langchain/anthropic": "^0.1.21",
-    "@langchain/community": "^0.0.34",
-    "@langchain/core": "^0.3.48",
-    "@langchain/google-genai": "^0.0.10",
+    "@langchain/anthropic": "^0.3.20",
+    "@langchain/community": "^0.3.42",
+    "@langchain/core": "^0.3.55",
+    "@langchain/google-genai": "^0.2.9",
     "@langchain/groq": "^0.2.2",
-    "@langchain/openai": "^0.5.7",
+    "@langchain/openai": "^0.5.10",
     "electron-squirrel-startup": "^1.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.19.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.0.4",
-    "electron": "^26.1.0",
+    "@types/react": "^18.3.21",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.2.1",
+    "cross-env": "^7.0.3",
+    "electron": "^26.6.10",
     "electron-builder": "^24.13.3",
-    "typescript": "^5.2.2",
-    "vite": "^4.4.9",
-    "vite-plugin-electron": "^0.14.0"
+    "typescript": "^5.4.5",
+    "vite": "^4.5.14",
+    "vite-plugin-electron": "^0.14.1"
   }
 }

@@ -1,15 +1,15 @@
 :root {
-  --background-primary: #1a1a1a;
-  --background-secondary: #242424;
-  --background-tertiary: #2d2d2d;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --text-tertiary: #999999;
+  --background-primary: #f5f5dc; /* Cream color */
+  --background-secondary: #f0f0d8; /* Slightly darker cream */
+  --background-tertiary: #e8e8d0; /* Even darker cream for tertiary elements */
+  --text-primary: #333333; /* Dark text for contrast on cream background */
+  --text-secondary: #555555; /* Medium dark text */
+  --text-tertiary: #777777; /* Lighter text */
   --accent-purple: #9C78FF;
   --accent-coral: #e88b74;
   --accent-blue: #78AAFF;
   --accent-green: #78FFA7;
-  --border-color: #3d3d3d;
+  --border-color: #d0d0c0; /* Light border color that works with cream */
 
   /* Additional variables for chat page */
   --primary-color: var(--accent-coral);

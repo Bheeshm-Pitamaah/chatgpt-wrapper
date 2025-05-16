@@ -5,7 +5,7 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './', 
+  base: './',
   plugins: [
     react(),
     electron({
@@ -28,7 +28,6 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
-  base: './',
   server: {
     port: 5173,
     strictPort: true,
@@ -37,6 +36,10 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     assetsDir: 'assets',
+    // Copy public directory to dist
+    copyPublicDir: true,
+    // Ensure assets are properly included
+    assetsInlineLimit: 0,
     rollupOptions: {
       output: {
         manualChunks: undefined

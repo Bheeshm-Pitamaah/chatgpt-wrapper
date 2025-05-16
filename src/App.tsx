@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ChatPage from './pages/ChatPage';
 import SettingsPage from './pages/SettingsPage';
@@ -19,18 +19,18 @@ const App: React.FC = () => {
         // Initialize IndexedDB
         await indexedDBService.init();
         setDbReady(true);
-        
+
         // Check if we need to migrate data
         if (!localStorage.getItem('kapi_migration_completed')) {
           setIsMigrating(true);
           const migrationSuccess = await migrateFromLocalStorage();
-          
+
           if (migrationSuccess) {
             // Clean up localStorage after successful migration
             // Only remove the old conversations data, keep the migration flag
             clearLocalStorageAfterMigration();
           }
-          
+
           setIsMigrating(false);
           setMigrationComplete(true);
         } else {

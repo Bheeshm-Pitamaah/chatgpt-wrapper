@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import './HomePage.css'; // For additional global styles
-import { 
-  AVAILABLE_MODELS, 
-  fetchOllamaModels, 
+import {
+  AVAILABLE_MODELS,
+  fetchOllamaModels,
   type SupportedModel,
   saveSelectedModel,
   saveSelectedProvider,
@@ -14,6 +14,8 @@ import {
 import { PaperClipIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 // Import package.json for version
 import packageInfo from '../../package.json';
+// Import logo image directly
+import logoImage from '../assets/logos/icon.png';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -78,7 +80,7 @@ const HomePage: React.FC = () => {
           saveSelectedModel(selectedModel.id);
           saveSelectedProvider(selectedModel.provider);
         }
-        
+
         // Make sure we're storing valid JSON
         localStorage.setItem('kapi_initialMessage', JSON.stringify(messageData));
         console.log('Stored initial message:', messageData);
@@ -174,12 +176,12 @@ const HomePage: React.FC = () => {
       <div className={styles['welcome-section']}>
         <div className={styles['logo-container']}>
           <img
-            src="/assets/logos/icon.png"
+            src={logoImage}
             alt="KAPI Logo"
             className={styles['logo']}
           />
         </div>
-        <h1 className="welcome-heading">Hey there, Vibe Coder!</h1>
+        <h1 className="welcome-heading">Hello Rohit, Jarvis at your Service</h1>
 
         <div className={styles['input-container']}>
           <textarea
@@ -232,16 +234,16 @@ const HomePage: React.FC = () => {
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
-                            
+
                             // Don't change provider if it's already selected
                             if (selectedProvider === provider) {
                               setIsProviderMenuOpen(false);
                               return;
                             }
-                            
+
                             setSelectedProvider(provider);
                             saveSelectedProvider(provider);
-                            
+
                             // When provider changes, we'll find appropriate model in the useEffect
                             setIsProviderMenuOpen(false);
                           }}
@@ -279,13 +281,13 @@ const HomePage: React.FC = () => {
                         e.stopPropagation();
                         setSelectedModel(model);
                         saveSelectedModel(model.id);
-                        
+
                           // Update provider if it doesn't match
                             if (selectedProvider !== model.provider) {
                               setSelectedProvider(model.provider);
                               saveSelectedProvider(model.provider);
                             }
-                            
+
                             setIsModelMenuOpen(false);
                           }}
                       >
