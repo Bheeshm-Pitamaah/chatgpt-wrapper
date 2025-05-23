@@ -328,13 +328,6 @@ const HomePage: React.FC = () => {
           </button>
           <button
             className={styles['action-button']}
-            onClick={() => focusTextarea('CodeReview: Analyze this codebase for issues, bugs, and best practices')}
-          >
-            <span className="icon">📚</span>
-            <span className="label">Code Review</span>
-          </button>
-          <button
-            className={styles['action-button']}
             onClick={() => navigate('/chat')}
           >
             <span className="icon">💬</span>

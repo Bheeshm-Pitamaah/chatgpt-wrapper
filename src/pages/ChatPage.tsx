@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { parseCodeReviewCommand, collectCodeSnippets, formatCodeReviewPrompt } from '../utils/codeCollector';
 import { type SupportedModel, saveSelectedModel, saveSelectedProvider, loadSelectedModel } from '../utils/langchainConfig';
 import { processMessage, type ChatMessage, type Conversation } from '../utils/chatService';
 import * as conversationService from '../services/conversationService';
-import * as fileSystemService from '../services/fileSystemService';
 import styles from './ChatPage.module.css';
 import loadingStyles from '../styles/LoadingIndicator.module.css';
 import LeftPanel from '../components/LeftPanel';
@@ -21,7 +19,6 @@ const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isProcessingDirectory, setIsProcessingDirectory] = useState(false);
   const [selectedModel, setSelectedModel] = useState<SupportedModel | null>(loadSelectedModel());
   const [showLeftPanel, setShowLeftPanel] = useState(true);
   const [showRightPanel, setShowRightPanel] = useState(false);
@@ -119,62 +116,7 @@ const ChatPage: React.FC = () => {
             timestamp: Date.now(),
           };
 
-          // Check if this is a code review command
-          console.log("Checking if initial message is a code review command:", initialMessage);
-          const reviewCommand = parseCodeReviewCommand(initialMessage);
-          console.log("Initial message parse result:", reviewCommand);
-
-          if (reviewCommand) {
-            console.log("Code review command detected in initial message");
-            // This is a code review command, let's create a new conversation
-            // Mark this message as processed immediately
-            localStorage.setItem('rohit_last_processed_timestamp', timestamp.toString());
-            localStorage.removeItem('rohit_initialMessage');
-
-            // Always start with a new conversation for code review from homepage
-            setActiveConversationId(null);
-
-            // Add user message and instructional message
-            setMessages([
-              userMessage,
-              {
-                id: `msg_${Date.now()}_system_${Math.random().toString(36).substring(2, 9)}`,
-                content: "Code review requested. Click the send button to start the process and select a directory to analyze.",
-                role: 'assistant',
-                timestamp: Date.now(),
-              }
-            ]);
-
-            // Create a new conversation for this code review
-            const newConversation = await conversationService.createConversation(userMessage);
-            console.log("Created new conversation for code review with ID:", newConversation.id);
-
-            // Update the conversation title to make it clear this is a code review
-            await conversationService.updateConversationTitle(
-              newConversation.id,
-              "CodeReview: " + (reviewCommand.args || "Analysis")
-            );
-
-            // Set the active conversation ID to the new conversation
-            setActiveConversationId(newConversation.id);
-
-            // Set messages to include the user message
-            setMessages([userMessage]);
-
-            // Add a small delay to ensure IndexedDB has completed the transaction
-            console.log("Adding delay before refreshing conversations list");
-            await new Promise(resolve => setTimeout(resolve, 100));
-
-            // Refresh the conversations list to show the new conversation in the UI
-            console.log("Refreshing conversations list");
-            const updatedConversations = await conversationService.loadConversations();
-            console.log(`Refreshed conversations list, found ${updatedConversations.length} conversations`);
-            setConversations(updatedConversations);
-
-            return;
-          }
-
-          // Normal message processing (non-code review)
+          // Normal message processing
           setMessages([userMessage]);
 
           // Create a new conversation with this message
@@ -346,166 +288,6 @@ const ChatPage: React.FC = () => {
   const handleSendMessage = async () => {
     const messageToSend = inputValue.trim();
     if (messageToSend === '' || isProcessing || !selectedModel || isDbInitializing) return;
-
-    // Check if this is a code review command
-    console.log("Checking if message is a code review command:", messageToSend);
-    const reviewCommand = parseCodeReviewCommand(messageToSend);
-    console.log("Parse result:", reviewCommand);
-    if (reviewCommand) {
-      console.log("Code review command detected:", reviewCommand.command, "with args:", reviewCommand.args);
-      // Always create a new conversation for code review commands
-      console.log("Will create a new conversation for code review");
-      // Reset active conversation ID to ensure we create a new one
-      setActiveConversationId(null);
-      // Handle code review command
-      setIsProcessing(true);
-      setInputValue('');
-
-      const userMessage: ChatMessage = {
-        id: `msg_${Date.now()}_user_${Math.random().toString(36).substring(2, 9)}`,
-        content: messageToSend,
-        role: 'user',
-        timestamp: Date.now(),
-      };
-
-      // Add user message to UI immediately
-      setMessages(prev => [...prev, userMessage]);
-
-      try {
-        console.log("Starting code review process...");
-        // Prompt the user to select a directory
-        console.log("Prompting user to select a directory...");
-        const selectedDir = await fileSystemService.selectDirectory();
-        console.log("Selected directory:", selectedDir);
-
-        if (!selectedDir) {
-          // User canceled directory selection
-          const cancelMessage: ChatMessage = {
-            id: `msg_${Date.now()}_asst_${Math.random().toString(36).substring(2, 9)}`,
-            content: "Code review canceled. Please try again and select a directory when prompted.",
-            role: 'assistant',
-            timestamp: Date.now(),
-          };
-          setMessages(prev => [...prev, cancelMessage]);
-          setIsProcessing(false);
-          return;
-        }
-
-        // Show processing message with loading animation
-        const processingMessage: ChatMessage = {
-          id: `msg_${Date.now()}_system_${Math.random().toString(36).substring(2, 9)}`,
-          content: `<div class="loading-animation-container">Scanning directory: ${selectedDir}. This may take a moment depending on the size of the codebase...</div>`,
-          role: 'assistant',
-          timestamp: Date.now(),
-          isLoading: true, // Add a flag to indicate this is a loading message
-        };
-        setMessages(prev => [...prev, processingMessage]);
-
-        // Collect code snippets from selected directory
-        console.log("Starting to collect code snippets from directory...");
-        setIsProcessingDirectory(true);
-        const codeResult = await collectCodeSnippets(selectedDir);
-        console.log("Code collection complete. Files collected:", codeResult.includedPaths.length);
-        console.log("Total tokens:", codeResult.totalTokens);
-        console.log("First few files:", codeResult.includedPaths.slice(0, 5));
-
-        // Always create a new conversation for code review
-        console.log("Creating new conversation for code review");
-        const newConversation = await conversationService.createConversation(userMessage);
-        const conversationId = newConversation.id;
-
-        // Update the UI state
-        setActiveConversationId(conversationId);
-
-        // Set messages to include the user message
-        setMessages([userMessage]);
-
-        console.log("Created new conversation with ID:", conversationId);
-
-        // Add a small delay to ensure IndexedDB has completed the transaction
-        console.log("Adding delay before refreshing conversations list");
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        // Refresh the conversations list to show the new conversation in the UI
-        console.log("Refreshing conversations list");
-        const updatedConversations = await conversationService.loadConversations();
-        console.log(`Refreshed conversations list, found ${updatedConversations.length} conversations`);
-        setConversations(updatedConversations);
-
-        // Format prompt for the LLM
-        console.log("Formatting prompt with review request:", reviewCommand.args);
-        const prompt = formatCodeReviewPrompt(reviewCommand.args, codeResult);
-        console.log("Prompt formatted, length:", prompt.length, "characters");
-
-        // Process with AI
-        const tempConversation: Conversation = {
-          id: conversationId, // We've already created a new conversation at this point
-          messages: [],
-          title: "CodeReview: " + (reviewCommand.args || "Analysis"),
-          createdAt: Date.now(),
-          lastModified: Date.now()
-        };
-
-        // Update the conversation title to make it clear this is a code review
-        await conversationService.updateConversationTitle(
-          conversationId,
-          "CodeReview: " + (reviewCommand.args || "Analysis")
-        );
-
-        // Add a loading message while the model is processing
-        const modelProcessingMessage: ChatMessage = {
-          id: `msg_${Date.now()}_system_${Math.random().toString(36).substring(2, 9)}`,
-          content: `Analyzing code with ${selectedModel?.name || "AI"}...`,
-          role: 'assistant',
-          timestamp: Date.now(),
-          isLoading: true,
-        };
-        setMessages(prev => [...prev, modelProcessingMessage]);
-
-        console.log("Using model for code review:", selectedModel?.name || "unknown");
-        const response = await processMessage(tempConversation, prompt, selectedModel?.id);
-        console.log("Code review completed successfully, response length:", response.length);
-
-        // Create and add code review result message
-        const assistantMessage: ChatMessage = {
-          id: `msg_${Date.now()}_asst_${Math.random().toString(36).substring(2, 9)}`,
-          content: response,
-          role: 'assistant',
-          timestamp: Date.now(),
-        };
-
-        // Replace all loading/processing messages with the actual results
-        setMessages(prev => prev.filter(msg =>
-          !msg.isLoading && msg.id !== processingMessage.id
-        ).concat(assistantMessage));
-
-        // Save assistant message to conversation
-        if (conversationId) {
-          await conversationService.addMessageToConversation(conversationId, assistantMessage);
-        }
-
-        // Refresh conversation list
-        const latestConversations = await conversationService.loadConversations();
-        setConversations(latestConversations);
-
-      } catch (error) {
-        console.error('Error processing code review:', error);
-        console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace available');
-        const errorMessage: ChatMessage = {
-          id: `msg_${Date.now()}_err_${Math.random().toString(36).substring(2, 9)}`,
-          content: `Error processing code review: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`,
-          role: 'assistant',
-          timestamp: Date.now(),
-        };
-        // Remove loading messages and add the error message
-        setMessages(prev => prev.filter(msg => !msg.isLoading).concat(errorMessage));
-      } finally {
-        setIsProcessing(false);
-        setIsProcessingDirectory(false);
-      }
-
-      return;
-    }
 
     // Rate limiting check
     const now = Date.now();
@@ -721,7 +503,7 @@ const ChatPage: React.FC = () => {
                 );
               }
 
-              // Check for system messages (messages about CodeReview)
+              // Check for system messages
               if (message.id.includes('_system_')) {
                 return (
                   <div key={message.id} className={styles['system-message']}>
@@ -742,12 +524,6 @@ const ChatPage: React.FC = () => {
             })}
             {messages.length === 0 && !activeConversationId && (
               <div className={styles['empty-chat-placeholder']}>
-                <div className={styles['feature-tip']}>
-                  <h3>Code Review Feature</h3>
-                  <p>Start a message with <code>CodeReview:</code> followed by your request to analyze code.</p>
-                  <p>Example: <code>CodeReview: Identify potential performance issues in my code</code></p>
-                  <p>You'll be prompted to select a directory to analyze.</p>
-                </div>
                 <p className={styles['helper-text']}>Type in the input box below to begin</p>
               </div>
             )}
@@ -765,13 +541,13 @@ const ChatPage: React.FC = () => {
                   handleSendMessage();
                 }
               }}
-              placeholder="Type your message or start with 'CodeReview:' to analyze code..."
-              disabled={isProcessing || isProcessingDirectory}
+              placeholder="Type your message..."
+              disabled={isProcessing}
               rows={1}
             />
             <button
               onClick={handleSendMessage}
-              disabled={isProcessing || isProcessingDirectory || inputValue.trim() === '' || !selectedModel}
+              disabled={isProcessing || inputValue.trim() === '' || !selectedModel}
               className={styles['send-button']}
               title={!selectedModel ? 'Please select a model' : 'Send message'}
             >
