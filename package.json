@@ -71,7 +71,6 @@
       ]
     },
     "win": {
-      "icon": "build/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -127,6 +126,9 @@
     "cross-env": "^7.0.3",
     "electron": "^26.6.10",
     "electron-builder": "^24.13.3",
+    "jimp": "^1.6.0",
+    "png-to-ico": "^2.1.8",
+    "sharp": "^0.34.1",
     "typescript": "^5.4.5",
     "vite": "^4.5.14",
     "vite-plugin-electron": "^0.14.1"

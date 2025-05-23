@@ -15,7 +15,8 @@ import { PaperClipIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 // Import package.json for version
 import packageInfo from '../../package.json';
 // Import logo image directly
-import logoImage from '../assets/logos/icon.png';
+// Use image directly from public folder with relative path
+const logoImage = '/assets/logos/icon.png';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -177,7 +178,7 @@ const HomePage: React.FC = () => {
         <div className={styles['logo-container']}>
           <img
             src={logoImage}
-            alt="KAPI Logo"
+            alt="Rohit Bot Logo"
             className={styles['logo']}
           />
         </div>
