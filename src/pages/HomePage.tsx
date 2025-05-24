@@ -164,14 +164,6 @@ const HomePage: React.FC = () => {
     // Implementation of handleAttachFile
   };
 
-  // Helper function to focus the textarea
-  const focusTextarea = (text: string) => {
-    setInputValue(text);
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
-
   return (
     <div className={styles['home-container']}>
       <div className={styles['welcome-section']}>
@@ -312,20 +304,6 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className={styles['quick-actions']}>
-          <button
-            className={styles['action-button']}
-            onClick={() => focusTextarea('Create a modern website mockup  in SVG format for the homepage of a fictional digital-first bank named "NovaBank". The design should be clean and contemporary, using a flat, minimalistic style that is both friendly and professional. Utilize a soft, pastel color palette: sky blue (#76C7F0), mint green (#A8E6CF), soft white (#FFFFFF), and light gray (#E0E0E0). Incorporate rounded shapes and smooth curves with a consistent stroke width of approximately 2px for all elements. The central focus should be a sleek smartphone displaying a simplified banking app interface (showing balance overview and a send money button). Surround this with icons such as a shield (for security), an upward graph (for investments), a hand holding a credit card (for digital payments), and a globe (for global banking access). Add subtle decorative elements like floating dollar coins and leaf icons to symbolize "growth". The composition should have the smartphone as the central focus, with supporting icons arranged in a semi-circle around it, ensuring ample white space for a breathable layout. The output should be in SVG format, scalable to 1920px width without pixelation, with each major element (phone, shield, graph, etc.) in a separate <g> group with descriptive id attributes. Ensure no embedded raster images are used, only pure vector shapes, optimized for web with simple paths and minimal nesting.')}
-          >
-            <span className="icon">✏️</span>
-            <span className="label">Mockup</span>
-          </button>
-          <button
-            className={styles['action-button']}
-            onClick={() => focusTextarea('Help me code')}
-          >
-            <span className="icon">&lt;/&gt;</span>
-            <span className="label">Code</span>
-          </button>
           <button
             className={styles['action-button']}
             onClick={() => navigate('/chat')}

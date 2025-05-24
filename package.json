@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Simplified Electron app with Vite",
   "author": {
-    "name": "Balaji Viswanathan"
+    "name": "Rohit Madasu"
   },
   "main": "dist-electron/main.js",
   "scripts": {
@@ -28,81 +28,15 @@
       "dist-electron/**/*"
     ],
     "directories": {
-      "output": "release",
-      "buildResources": "build"
-    },
-    "mac": {
-      "icon": "build/icon.icns",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
-        }
-      ],
-      "hardenedRuntime": false,
-      "gatekeeperAssess": false,
-      "entitlements": false,
-      "entitlementsInherit": false,
-      "identity": null
-    },
-    "dmg": {
-      "sign": false,
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
+      "output": "."
     },
     "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
+      "target": "portable",
+      "icon": "assets/icons/logo.ico",
+      "requestedExecutionLevel": "asInvoker"
     },
-    "nsis": {
-      "oneClick": true,
-      "allowElevation": false,
-      "allowToChangeInstallationDirectory": false,
-      "perMachine": false,
-      "deleteAppDataOnUninstall": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Rohit Bot"
-    },
-    "linux": {
-      "icon": "build/icon.png"
-    },
-    "asar": true,
-    "asarUnpack": [
-      "dist/**/*.{png,jpg,jpeg,gif,svg,ico}"
-    ]
+    "icon": "assets/icons/logo.ico",
+    "asar": true
   },
   "dependencies": {
     "@google/genai": "^0.14.0",
@@ -126,9 +60,6 @@
     "cross-env": "^7.0.3",
     "electron": "^26.6.10",
     "electron-builder": "^24.13.3",
-    "jimp": "^1.6.0",
-    "png-to-ico": "^2.1.8",
-    "sharp": "^0.34.1",
     "typescript": "^5.4.5",
     "vite": "^4.5.14",
     "vite-plugin-electron": "^0.14.1"

@@ -1,7 +1,7 @@
 # Rohit Bot
 
 <div align="center">
-  <img src="public/assets/logos/icon.png" alt="Rohit Bot Logo" width="200"/>
+  <img src="assets/icons/logo.png" alt="Rohit Bot Logo" width="200"/>
   <h3>Your AI-Powered Development Companion</h3>
   <p><em>Code smarter, build faster, learn deeper</em></p>
 </div>
@@ -24,6 +24,20 @@ Rohit Bot is a simple lightweight application aimed at revolutionizing the way d
 2. Install dependencies: `npm install`
 3. Start the development server: `npm run dev`
 4. Or build and run the application: `npm run start:prod`
+
+## Project Structure
+
+The project is organized into the following directories:
+
+- `src/` - Main application source code
+- `electron/` - Electron main process files
+- `public/` - Public web assets
+- `assets/` - Static assets (icons, images)
+- `scripts/` - Build and utility scripts
+- `tests/` - Test files
+- `docs/` - Documentation
+
+For detailed information about the project structure, see [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md).
 
 ### Available Scripts
 
